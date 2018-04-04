@@ -121,31 +121,30 @@
 
 					$result = mysqli_query($con, "SELECT product_name, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT $people");
 					$result2 = mysqli_query($con, "SELECT category_name FROM Categories WHERE Categories.category_id='".$categoryID."'");
-					 
-					
+					$data = array();
+					$data[]=$temp;
 					$sum = 0;
-					$temp1 = $result;
+					while($temp = mysqli_fetch_array($result))
+								{
+									$data[] = $temp;
+									$sum+=$temp['price'];
+								}
 					
-					if($temp1 == $result)
-					{
-						echo "YAY";
-					}
-					else
-					{
-						echo "FALSE";
-					}
-
+					
+					
 					while($total = mysqli_fetch_array($result))
 					{
 						$sum+=$total['price'];
 					}
 					while($sum>$budget){
 							$sum = 0;
+							$data = array();
+							mysqli_free_result($result);
 							$result = mysqli_query($con, "SELECT product_name, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT $people");
-							$temp1 = clone $result;
-					        $result2 = mysqli_query($con, "SELECT category_name FROM Categories WHERE Categories.category_id='".$categoryID."'");
-					        while($temp = mysqli_fetch_array($temp1))
+							$result2 = mysqli_query($con, "SELECT category_name FROM Categories WHERE Categories.category_id='".$categoryID."'");
+					        while($temp = mysqli_fetch_array($result))
 								{
+									$data[] = $temp;
 									$sum+=$temp['price'];
 								}
 							
@@ -164,12 +163,12 @@
 					<th>Product Name</th>
 					<th>Price ($)</th>
 					</tr>";
-					while($row = mysqli_fetch_array($result))
+					foreach($data as $temp)
 					 {
 
 					 echo "<tr>";
-					 echo "<td>" .$row['product_name']. "</td>";
-					 echo "<td>" .$row['price']. "</td>";
+					 echo "<td>" .$temp['product_name']. "</td>";
+					 echo "<td>" .$temp['price']. "</td>";
 					
 					 echo "</tr>";
 					 
