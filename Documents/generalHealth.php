@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -79,13 +82,10 @@
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="mainManager.html">Savegan <em>.</em></a></div>
+					<div id="gtco-logo"><a href="main.php">Savegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
-					<ul>
-						<li class="btn-cta"><a href="managerAddRemoveProduct.html"><span>Add/Remove Product</span></a></li>
-						<li class="btn-cta"><a href="managerSupplier.html"><span>Edit Product</span></a></li>
-					</ul>
+					
 				</div>
 			</div>
 			
@@ -104,28 +104,45 @@
 				
 					<?php
 					// Create connection
-					$categoryID = 2;
+					$categoryID = 1;
+					$marketID = rand(1,5); //random market selection
+					$_SESSION['marker'] = $marketID;
 					$con=mysqli_connect("35.188.41.213","root","cpsc471","saVegan");
 					// Check connection
 					if (mysqli_connect_errno($con))
 					 {
 					 echo "Failed to connect to MySQL: " . mysqli_connect_error();
 					 }
-					$result = mysqli_query($con, "SELECT product_name, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT 10");
+					$result = mysqli_query($con, "SELECT product_name, aisle_id, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT 10");
+					$result2 = mysqli_query($con, "SELECT market_name FROM Market WHERE Market.market_id='".$marketID."'");
+					while($rowTitle = mysqli_fetch_array($result2))
+					{
+						echo "<h2 style='color:#FFFFFF'> Category Can Be Found At: " .$rowTitle['market_name']. "</h2>
+    					<a href='gMaps.html' target='_blank'><input type='submit' class='btn btn-primary' name='someAction' value='Map' /></a>";
+						 	
+					}
 					echo "<div class='w3-container'>
 					<table class='w3-table-all'>
 					<tr class='w3-red'>
 					<th>Product Name</th>
+					<th>Aisle Number</th>
 					<th>Price ($)</th>
 					</tr>";
 					$sum = 0;
-					while($row = mysqli_fetch_array($result))
+					$data = array();
+					while($temp = mysqli_fetch_array($result))
+								{
+									$data[] = $temp;
+									
+								}
+					foreach($data as $temp)
 					 {
 
 					 echo "<tr>";
-					 echo "<td>" . $row['product_name'] . "</td>";
-					 echo "<td>" . $row['price'] . "</td>";
-					 $sum+=$row['price'];
+					 echo "<td>" . $temp['product_name'] . "</td>";
+					  echo "<td>" .$temp['aisle_id']. "</td>";
+					 echo "<td>" . $temp['price'] . "</td>";
+					 $sum+=$temp['price'];
 					 echo "</tr>";
 					 
 					 }
@@ -136,12 +153,15 @@
 					echo "</table>";
 					echo "</div>";
 					mysqli_close($con);
+					$_SESSION['data'] = $data;
 					?>
 
 			</div>
 		</div>
 	</div>
-	<input type="submit" class="btn btn-primary" value="Select Category" onclick="location.href='results.html';">
+	<iframe style="display:none;" name="target"></iframe>
+	<a href="saveList.php" target="target"><input type="submit" class="btn btn-primary" value="Save List" onclick="location.href='saveListDone.html';"></a>
+	<input type="submit" class="btn btn-primary" value="Print Grocery List" onclick="printList()";">
 	<input type="submit" class="btn btn-primary" value="Back To Pre-Categories" onclick="location.href='preCategories.html';">
 	<footer id="gtco-footer" role="contentinfo">
 		<div class="gtco-container">
@@ -182,6 +202,12 @@
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
 	
+	<script>
+		function printList() {
+		    window.print();
+		}
+ 
+   </script>
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 	<!-- jQuery Easing -->

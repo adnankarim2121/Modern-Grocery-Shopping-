@@ -1,14 +1,18 @@
+<?php
+session_start();
+?>				
 <!DOCTYPE HTML>
 <html>
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Search Results</title>
+	<title>Your Past Purchases</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
 	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
 	<meta name="author" content="FreeHTML5.co" />
-
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
   <!-- 
 	//////////////////////////////////////////////////////
@@ -64,6 +68,7 @@
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
+
 	</head>
 	<body>
 		
@@ -81,9 +86,7 @@
 					<div id="gtco-logo"><a href="main.php">Savegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
-					<ul>
-						<li class="btn-cta"><a href="contact.html"><span>Contact Us!</span></a></li>
-					</ul>
+					
 				</div>
 			</div>
 			
@@ -95,54 +98,73 @@
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
-					<h2 style= "color:#FFFFFF">Past Purchases</h2>
+					<h2 style= "color:#FFFFFF">Your Past Purchases</h2>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-4 col-md-4 col-sm-6">
-					<a href="images/nAndF.jpeg" class="fh5co-project-item image-popup">
-						<figure>
-							<div class="overlay"><i class="ti-plus"></i></div>
-							<img src="images/nf.jpeg" alt="Image" class="img-responsive">
-						</figure>
-						<div class="fh5co-text">
-							<h2>Receipt 1</h2>
-							<p>TABLE HERE</p>
-						</div>
-					</a>
-				</div>
-
-				<div class="col-lg-4 col-md-4 col-sm-6">
-					<a href="images/nAndF.jpeg" class="fh5co-project-item image-popup">
-						<figure>
-							<div class="overlay"><i class="ti-plus"></i></div>
-							<img src="images/nf.jpeg" alt="Image" class="img-responsive">
-						</figure>
-						<div class="fh5co-text">
-							<h2>Receipt 2</h2>
-							<p>TABLE HERE</p>
-						</div>
-					</a>
-				</div>
-
-				<div class="col-lg-4 col-md-4 col-sm-6">
-					<a href="images/nAndF.jpeg" class="fh5co-project-item image-popup">
-						<figure>
-							<div class="overlay"><i class="ti-plus"></i></div>
-							<img src="images/nf.jpeg" alt="Image" class="img-responsive">
-						</figure>
-						<div class="fh5co-text">
-							<h2>Receipt 3</h2>
-							<p>TABLE HERE</p>
-						</div>
-					</a>
-				</div>
 				
+				
+					<?php
+					//converts php array to json, so we can store in sql
+					//$json_string= json_encode($temp);
+					//create connection again, store in receipts according to which user is logged in,
+					$x = $_SESSION['user_id']; 
+					$con=mysqli_connect("35.188.41.213","root","cpsc471","saVegan");
+					if (mysqli_connect_errno($con))
+					 {
+					 echo "Failed to connect to MySQL: " . mysqli_connect_error();
+					 }
+					 //$result = mysqli_query($con, "SELECT products FROM receipt WHERE user_id = 1");
+					 $sql = "SELECT * FROM receipt where receipt.user_id='".$x."' ";
+					 $result = mysqli_query($con, $sql);
+					 //$convert = mysqli_fetch_array($result);
+					 //printf ("%s\n",$convert["products"]);
+					 //$array= json_decode($convert['products'], true);
+					 $array = array();
+					 $mergedArray = array();
+					 while($temp = mysqli_fetch_array($result))
+								{
+									$json = json_decode($temp['products'], true);
+									$array = array_merge($array,$json);
+								}
+					$mergedArray = $array;
+					
+					 
+					 echo "<div class='w3-container'>
+					<table class='w3-table-all'>
+					<tr class='w3-red'>
+					<th>Product Name</th>
+					<th>Price ($)</th>
+					</tr>";
+					$sum = 0;
+					foreach($mergedArray as $row)
+					 {
+
+					 echo "<tr>";
+					 echo "<td>" . $row['product_name'] . "</td>";
+					 echo "<td>" . $row['price'] . "</td>";
+					 $sum+=$row['price'];
+					 echo "</tr>";
+					 
+					 }
+					echo "<td>"; 
+					echo "Amount Purchased to Date: $";
+					echo $sum; 
+					echo "</td>";
+					echo "</table>";
+					echo "</div>";
+					mysqli_close($con);
+					?>
+					
+
 
 			</div>
 		</div>
 	</div>
-		<footer id="gtco-footer" role="contentinfo">
+
+	<input type="submit" class="btn btn-primary" value="Print Past Purchases" onclick="printList()">
+	<input type="submit" class="btn btn-primary" value="Back To Search" onclick="location.href='main.php';">
+	<footer id="gtco-footer" role="contentinfo">
 		<div class="gtco-container">
 			<div class="row row-p	b-md">
 
@@ -173,7 +195,6 @@
 
 		</div>
 	</footer>
-
 	</div>
 
 	</div>
@@ -181,6 +202,12 @@
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
+
+	<script>
+		function printList() {
+		    window.print();
+		}
+   </script>
 	
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
@@ -202,4 +229,25 @@
 
 	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

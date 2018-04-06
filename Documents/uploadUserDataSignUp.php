@@ -1,4 +1,5 @@
 <?php
+session_start();
 $email = $_POST["username"];
 $password = $_POST["password"];
 $password2 = $_POST["password2"];
@@ -24,7 +25,16 @@ if (mysqli_connect_errno($con))
 
  }
 else{
- header( 'Location:/main.html' );
+$queryUser1 = mysqli_query($con,"SELECT email,password, user_id FROM user WHERE email='".$email."' AND password='".$password."'"); //user query
+$id = 0;
+while($rowTitle = mysqli_fetch_array($queryUser1))
+					{
+						
+						 	$id = $rowTitle['user_id'];
+					}
+
+$_SESSION['user_id'] = $id;
+ header( 'Location:/main.php' );
  mysqli_close($con);
  exit;
 }

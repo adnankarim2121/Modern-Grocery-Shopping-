@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -65,6 +68,7 @@
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
+
 	</head>
 	<body>
 		
@@ -79,7 +83,7 @@
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="mainManager.html">Savegan <em>.</em></a></div>
+					<div id="gtco-logo"><a href="main.php">Savegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					
@@ -102,7 +106,26 @@
 					<?php
 					$budget = $_POST["budget"];
 					$people = $_POST["people"];
-					$categoryID = rand(1,6); //random category selection
+					$categoryIDString = $_POST["Category"]; //random category selection
+					$locationIDString = $_POST["Location"];
+					$categoryID;
+					$marketID;
+					if($locationIDString == 6)
+					{
+						$marketID = rand(1,5);
+					}
+					else
+					{
+						$marketID = (int)$locationIDString;
+					}
+					if($categoryIDString == 7)
+					{
+						$categoryID = rand(1,6);
+					}
+					else{
+					$categoryID = (int)$categoryIDString;
+					}
+					$_SESSION['marker'] = $marketID;
 					// Create connection
 					$con=mysqli_connect("35.188.41.213","root","cpsc471","saVegan");
 					//user checking
@@ -118,10 +141,11 @@
 					 {
 					 echo "Failed to connect to MySQL: " . mysqli_connect_error();
 					 }
-
-					$result = mysqli_query($con, "SELECT product_name, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT $people");
+					$result = mysqli_query($con, "SELECT product_name, aisle_id, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT $people");
 					$result2 = mysqli_query($con, "SELECT category_name FROM Categories WHERE Categories.category_id='".$categoryID."'");
+					$result3 = mysqli_query($con, "SELECT market_name FROM Market WHERE Market.market_id='".$marketID."'");
 					$data = array();
+					$temp = mysqli_fetch_array($result);
 					$data[]=$temp;
 					$sum = 0;
 					while($temp = mysqli_fetch_array($result))
@@ -140,8 +164,9 @@
 							$sum = 0;
 							$data = array();
 							mysqli_free_result($result);
-							$result = mysqli_query($con, "SELECT product_name, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT $people");
+							$result = mysqli_query($con, "SELECT product_name, aisle_id, price FROM products WHERE products.category_id='".$categoryID."' ORDER BY RAND() LIMIT $people");
 							$result2 = mysqli_query($con, "SELECT category_name FROM Categories WHERE Categories.category_id='".$categoryID."'");
+							$result3 = mysqli_query($con, "SELECT market_name FROM Market WHERE Market.market_id='".$marketID."'");
 					        while($temp = mysqli_fetch_array($result))
 								{
 									$data[] = $temp;
@@ -153,7 +178,20 @@
 
 					while($rowTitle = mysqli_fetch_array($result2))
 					{
-						echo "<h2 style='color:#FFFFFF'> Category: ".$rowTitle['category_name']. "</h2>";
+						echo "<h2 style='color:#FFFFFF'> Category: " .$rowTitle['category_name']. "</h2>";
+						
+						//echo $marketTitle['market_name'];
+						 
+						
+					}
+
+					while($rowTitle = mysqli_fetch_array($result3))
+					{
+						echo "<h2 style='color:#FFFFFF'> Category Can Be Found At: " .$rowTitle['market_name']. "</h2>
+    					<a href='gMaps.html' target='_blank'><input type='submit' class='btn btn-primary' name='someAction' value='Map' /></a>";
+						
+						//echo $marketTitle['market_name'];
+						 
 						
 					}
 					
@@ -161,6 +199,7 @@
 					<table class='w3-table-all'>
 					<tr class='w3-red'>
 					<th>Product Name</th>
+					<th>Aisle Number</th>
 					<th>Price ($)</th>
 					</tr>";
 					foreach($data as $temp)
@@ -168,6 +207,7 @@
 
 					 echo "<tr>";
 					 echo "<td>" .$temp['product_name']. "</td>";
+					 echo "<td>" .$temp['aisle_id']. "</td>";
 					 echo "<td>" .$temp['price']. "</td>";
 					
 					 echo "</tr>";
@@ -176,18 +216,42 @@
 					echo "<td>"; 
 					echo "Total Sum for this Category: $";
 					echo $sum; 
+					echo " ,which is $";
+					echo $budget - $sum;
+					echo " less than your desired budget of $";
+					echo $budget;
+					echo ".";
 					echo "</td>";
 					echo "</table>";
 					echo "</div>";
 					mysqli_close($con);
 				}
-					?>
+				$_SESSION['data'] = $data;
+				//include 'saveList.php';
+				//saveList($data) 
+				
+				/*	//converts php array to json, so we can store in sql
+					$json_string= json_encode($data);
+					//create connection again, store in receipts according to which user is logged in,
+					$con=mysqli_connect("35.188.41.213","root","cpsc471","saVegan");
+					if (mysqli_connect_errno($con))
+					 {
+					 echo "Failed to connect to MySQL: " . mysqli_connect_error();
+					 }
+					 $result = mysqli_query($con, "INSERT INTO receipt (products) VALUES ('$json_string')");*/
+
+					?> 
+
+
 
 			</div>
 		</div>
 	</div>
-	<input type="submit" class="btn btn-primary" value="Select Category" onclick="location.href='results.html';">
-	<input type="submit" class="btn btn-primary" value="Back To Search" onclick="location.href='main.html';">
+
+	<iframe style="display:none;" name="target"></iframe>
+	<a href="saveList.php" target="target"><input type="submit" class="btn btn-primary" value="Save List" onclick="location.href='saveListDone.html';"></a>
+	<input type="submit" class="btn btn-primary" value="Print Grocery List" onclick="printList()">
+	<input type="submit" class="btn btn-primary" value="Back To Search" onclick="location.href='main.php';">
 	<footer id="gtco-footer" role="contentinfo">
 		<div class="gtco-container">
 			<div class="row row-p	b-md">
@@ -226,6 +290,14 @@
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 	</div>
+
+	<script>
+		function printList() {
+		    window.print();
+		}
+
+ 
+   </script>
 	
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>

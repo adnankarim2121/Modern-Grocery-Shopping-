@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -101,7 +104,19 @@
 
 					<div class="row row-mt-15em">
 						<div class="col-md-7 mt-text animate-box" data-animate-effect="fadeInUp">
-							<span class="intro-text-small">Welcome to SaVegan</span>
+							<?php
+							$con=mysqli_connect("35.188.41.213","root","cpsc471","saVegan");
+							$id = $_SESSION['user_id'];
+							$displayName;
+							$queryUser1 = mysqli_query($con,"SELECT email FROM user WHERE user_id='".$id."'");
+							while($rowTitle = mysqli_fetch_array($queryUser1))
+							{
+						
+						 		$displayName = $rowTitle['email'];
+							}
+							echo "<span class='intro-text-small'>Welcome, " .$displayName. ", to SaVegan</span>";
+							mysqli_close($con);
+							?>
 							<h1>Save money by becoming a mindful grocery shopper.</h1>	
 						</div>
 						<div class="col-md-4 col-md-push-1 animate-box" data-animate-effect="fadeInRight">
