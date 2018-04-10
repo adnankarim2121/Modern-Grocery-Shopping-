@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -28,26 +27,26 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
 	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="../css/animate.css">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="../css/icomoon.css">
 	<!-- Themify Icons-->
-	<link rel="stylesheet" href="css/themify-icons.css">
+	<link rel="stylesheet" href="../css/themify-icons.css">
 	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
 
 	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="css/magnific-popup.css">
+	<link rel="stylesheet" href="../css/magnific-popup.css">
 
 	<!-- Owl Carousel  -->
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="../css/owl.carousel.min.css">
+	<link rel="stylesheet" href="../css/owl.theme.default.min.css">
 
 	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="../css/style.css">
 
 	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
+	<script src="../js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
@@ -67,7 +66,7 @@
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="login.html">SaVegan <em>.</em></a></div>
+					<div id="gtco-logo"><a href="mainManager.html">SaVegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
@@ -80,8 +79,7 @@
 	</nav>
 
 </form>
-	<header id="gtco-header" class="gtco-cover" role="banner" style="background-image: url(images/image4.jpg)">
-		
+	<header id="gtco-header" class="gtco-cover" role="banner" style="background-image: url(../images/image4.jpg)">
 		<div class="overlay"></div>
 		<div class="gtco-container">
 			<div class="row">
@@ -90,98 +88,72 @@
 
 					<div class="row row-mt-15em">
 						<div class="col-md-7 mt-text animate-box" data-animate-effect="fadeInUp">
-							<span class="intro-text-small">Welcome to SaVegan</span>
-							<h1>Save money by becoming a mindful grocery shopper.</h1>	
+							
+							<h1>Add or Remove a Product</h1>	
 						</div>
 						<div class="col-md-4 col-md-push-1 animate-box" data-animate-effect="fadeInRight">
 							<div class="form-wrap">
 								<div class="tab">
 									<ul class="tab-menu">
-										
-										<li class="active gtco-first"><a href="#" data-tab="signup">Sign up</a></li>
-										<li class="gtco-second"><a href="#" data-tab="login">Login</a></li>
+										<li class="active gtco-first"><a href="#" data-tab="signup">Add a Product</a></li>
+										<li class="gtco-second"><a href="#" data-tab="login">Remove Product</a></li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-content-inner active" data-content="signup">
-											<form action="SignUpController.php" method="post">
+											<form action="productAddController.php" method="post">
 												<div class="row form-group">
 													<div class="col-md-12">
-														<label>Username or Email</label>
-														<input type="text" class="form-control" name="username">
-														<?php echo $_SESSION['signupEmailError']; ?>
-													</div>
-												</div>
-												<div class="row form-group">
-													<div class="col-md-12">
-														<label>Name</label>
-														<input type="text" class="form-control" name="fname">
-														<?php echo $_SESSION['signupNameError']; ?>
-													</div>
-												</div>
-												<div class="row form-group">
-													<div class="col-md-12">
-													<label for="password">Select Your Account Type</label>
-													<select name="userType">
-													  <option value="1">Customer</option>
-													  <option value="2">Manager</option>
-													  <option value="3">Supplier</option>
-													</select>
-													</div>
-												</div>
-												<div class="row form-group">
-													<div class="col-md-12">
-														<label for="password">Password</label>
-														<input type="password" class="form-control" name="password" id="password">
-														<?php echo $_SESSION['signupPass1Error']; ?>
-													</div>
-												</div>
-												<div class="row form-group">
-													<div class="col-md-12">
-														<label for="password2">Repeat Password</label>
-														<input type="password" class="form-control" name = "password2" id="password2">
-														<?php echo $_SESSION['signupPass2Error']; ?>
+														<label>Product Name</label>
+														<input type="text" class="form-control" name="newProductName">
 													</div>
 												</div>
 
 												<div class="row form-group">
 													<div class="col-md-12">
-														<input type="submit" class="btn btn-primary" value="Sign up"
-														>
+														<label for="password">Aisle ID</label>
+														<input type="text" class="form-control" name="newProductAisleID">
 													</div>
 												</div>
+
 												<div class="row form-group">
 													<div class="col-md-12">
-														<?php echo $_SESSION['signupError']; ?>
+														<label for="password">Department ID</label>
+														<input type="text" class="form-control" name="newProductDepartmentID">
+													</div>
+												</div>
+
+												<div class="row form-group">
+													<div class="col-md-12">
+														<label for="password">Quantity</label>
+														<input type="text" class="form-control" name="newProductQuantity">
+													</div>
+												</div>
+											
+
+												<div class="row form-group">
+													<div class="col-md-12">
+														<input type="submit" class="btn btn-primary" value="Add Product"
+														>
 													</div>
 												</div>
 											</form>
 										</div>
 
 										<div class="tab-content-inner" data-content="login">
-											<form action="LoginController.php" method="post">
+											<form action="managerRemove.php" method="post">
 												<div class="row form-group">
 													<div class="col-md-12">
-														<label for="username">Username or Email</label>
-														<input type="text" class="form-control" name = "usernameL" id="usernameL">
-														<?php echo $_SESSION['usernameEmptyError']; ?>
+														<label for="password">Product Name</label>
+														<input type="text" class="form-control" name="removeProductID" id="passwordL">
 													</div>
 												</div>
+
+
+
 												<div class="row form-group">
 													<div class="col-md-12">
-														<label for="password">Password</label>
-														<input type="password" class="form-control" name="passwordL" id="passwordL">
-														<?php echo $_SESSION['passwordEmptyError']; ?>
-													</div>
-												</div>
-												<div class="row form-group">
-													<div class="col-md-12">
-														<input type="submit" class="btn btn-primary" value="Login"
+														<input type="submit" class="btn btn-primary" value="Remove Product"
 														>
-													</div>
-												</div>
-												<div class="row form-group">
-													<div class="col-md-12">
-														<?php echo $_SESSION['loginError']; ?>
 													</div>
 												</div>
 											</form>
@@ -244,22 +216,22 @@
 	</div>
 	
 	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
+	<script src="../js/jquery.min.js"></script>
 	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
+	<script src="../js/jquery.easing.1.3.js"></script>
 	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
+	<script src="../js/jquery.waypoints.min.js"></script>
 	<!-- Carousel -->
-	<script src="js/owl.carousel.min.js"></script>
+	<script src="../js/owl.carousel.min.js"></script>
 	<!-- countTo -->
-	<script src="js/jquery.countTo.js"></script>
+	<script src="../js/jquery.countTo.js"></script>
 	<!-- Magnific Popup -->
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/magnific-popup-options.js"></script>
+	<script src="../js/jquery.magnific-popup.min.js"></script>
+	<script src="../js/magnific-popup-options.js"></script>
 	<!-- Main -->
-	<script src="js/main.js"></script>
+	<script src="../js/main.js"></script>
 
 	</body>
 </html>
