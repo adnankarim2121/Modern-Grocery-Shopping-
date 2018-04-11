@@ -1,4 +1,5 @@
 <html>
+<<<<<<< HEAD
 <head>
 <style>
 table {
@@ -46,6 +47,14 @@ echo "</table>";
 mysqli_close($con);
 ?>
 </body>
+=======
+	<head>
+		<meta http-equiv="refresh" content="0; url=http://localhost/login" />
+	</head>
+
+	<body>
+	</body>
+>>>>>>> a4d5318c082200adc5f7c97c0e6d338cd3f4f7cf
 </html>
 
 
