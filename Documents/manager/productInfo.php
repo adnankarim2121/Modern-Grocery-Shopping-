@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -66,7 +69,7 @@
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="mainManager.html">SaVegan <em>.</em></a></div>
+					<div id="gtco-logo"><a href="mainManager.php">SaVegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
@@ -105,6 +108,7 @@
 													<div class="col-md-12">
 														<label>Product Name</label>
 														<input type="text" class="form-control" name="newProductName">
+														
 													</div>
 												</div>
 
@@ -112,6 +116,7 @@
 													<div class="col-md-12">
 														<label for="password">Aisle ID</label>
 														<input type="text" class="form-control" name="newProductAisleID">
+														
 													</div>
 												</div>
 
@@ -119,6 +124,7 @@
 													<div class="col-md-12">
 														<label for="password">Department ID</label>
 														<input type="text" class="form-control" name="newProductDepartmentID">
+														
 													</div>
 												</div>
 
@@ -126,6 +132,7 @@
 													<div class="col-md-12">
 														<label for="password">Quantity</label>
 														<input type="text" class="form-control" name="newProductQuantity">
+														
 													</div>
 												</div>
 											
@@ -136,15 +143,22 @@
 														>
 													</div>
 												</div>
+
+												<div class="row form-group">
+													<div class="col-md-12">
+														
+													</div>
+												</div>
 											</form>
 										</div>
 
 										<div class="tab-content-inner" data-content="login">
-											<form action="managerRemove.php" method="post">
+											<form action="productRemoveController.php" method="post">
 												<div class="row form-group">
 													<div class="col-md-12">
-														<label for="password">Product Name</label>
+														<label for="password">Product ID</label>
 														<input type="text" class="form-control" name="removeProductID" id="passwordL">
+														
 													</div>
 												</div>
 
@@ -154,6 +168,12 @@
 													<div class="col-md-12">
 														<input type="submit" class="btn btn-primary" value="Remove Product"
 														>
+													</div>
+												</div>
+
+												<div class="row form-group">
+													<div class="col-md-12">
+														
 													</div>
 												</div>
 											</form>

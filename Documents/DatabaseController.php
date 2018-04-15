@@ -1,5 +1,5 @@
 <?php 
-
+	
 	static $con;
 
 	function getConnection() {
@@ -16,13 +16,34 @@
 			return $authenticatedUser;
 		}
 
-		// TODO: DEBUG
-		function createUser($email, $name, $password, $userType) { 
+		function createUserCustomer($email, $name, $password, $userType, $managerKey) { 
 			$con = getConnection();
-			$query = "INSERT INTO user (email, name, password, type) VALUES ('".$email."','".$name."','".$password."','".$userType."')";
+			if($userType === 'customer')
+			{
+
+
+			$query = "INSERT INTO user (email, name, password, type, mKEY) VALUES ('".$email."','".$name."','".$password."','".$userType."', 0)";
 			$result = mysqli_query($con, $query);
 			return $result;
+
+			}
+
+			else
+			{
+					//$con = getConnection();
+					$query1 = "SELECT * FROM Market WHERE Market.KEY = '".$managerKey."'";
+					$result1 = mysqli_query($con, $query1);
+					if(mysqli_num_rows($result1) == 0 )
+						{
+							return $result1;
+						}
+					$query = "INSERT INTO user (email, name, password, type, mKEY) VALUES ('".$email."','".$name."','".$password."','".$userType."',
+					'".$managerKey."')";
+					$result = mysqli_query($con, $query);
+					return $result;
+			}
 		}
+
 
 	// QUERIES FOR CUSTOMERS
 
@@ -45,9 +66,17 @@
 			return $result;
 		}
 
-		function getMarketItems($managerID) {
+		function getMarketItems($managerKey) {
 			$con = getConnection();
-			$query = "SELECT * FROM products, Market WHERE Market.manager_id = '".$managerID."' AND Market.market_id = products.market_id";
+			$query = "SELECT * FROM products, Market WHERE  Market.market_id = products.market_id
+			AND Market.KEY ='".$managerKey."'";
+			$result = mysqli_query($con, $query);
+			return $result;
+		}
+
+		function getMarket($managerKey) {
+			$con = getConnection();
+			$query = "SELECT * FROM Market WHERE Market.KEY= '".$managerKey."'";
 			$result = mysqli_query($con, $query);
 			return $result;
 		}
@@ -66,50 +95,50 @@
 			return $result;
 		}
 
-		// TODO
+		// TODO: CHECK IF WORKS
 		function getProductSuppliers($productID) {
 			$con = getConnection();
-			$query = "";
-			$result = mysqli_query($con, $query);
-			return $result;
-		}
-
-		// TODO
-		function getSupplierProducts($supplierID) {
-			$con = getConnection();
-			$query = "";
-			$result = mysqli_query($con, $query);
-			return $result;
-		}
-
-		// TODO
-		function updateProductQuantity($productID, $quantityAdded) {
-			$con = getConnection();
-			$query = "";
+			$query =  "SELECT * FROM supplier, Supplied_By WHERE supplier.supplier_id = Supplied_By.supplier_id AND Supplied_By.product_id = '".$productID."'";
 			$result = mysqli_query($con, $query);
 			return $result;
 		}
 
 		// TODO: CHECK IF WORKS
-		function addProduct($name, $aisle, $dept, $quantity) {
+		function getSupplierProducts($supplierID) {
 			$con = getConnection();
-			$query = "INSERT INTO products (product_name, aisle_id, department_id, quantity) VALUES ('".$name."','".$aisle."', '".$dept."', '".$quantity."')";
+			$query = "SELECT * FROM products, Supplied_By WHERE Supplied_By.product_id = products.product_id AND Supplied_By.supplier_id = '".$supplierID."'";
 			$result = mysqli_query($con, $query);
 			return $result;
 		}
 
-		// TODO
+		// TODO: CHECK IF WORKS
+		function updateProductQuantity($productID, $newQuantity) {
+			$con = getConnection();
+			$query = "UPDATE products SET quantity = '".$newQuantity."' WHERE products.product_id = '".$productID."'";
+			$result = mysqli_query($con, $query);
+			return $result;
+		}
+
+		// TODO: CHECK IF WORKS
+		function addProduct($name, $aisle, $dept, $quantity, $marketID) {
+			$con = getConnection();
+			$query = "INSERT INTO products (product_name, aisle_id, department_id, quantity, market_id) VALUES ('".$name."','".$aisle."', '".$dept."', '".$quantity."', '".$marketID."')";
+			$result = mysqli_query($con, $query);
+			return $result;
+		}
+
+		// TODO: CHECK IF WORKS
 		function deleteProduct($productID, $marketID) {
 			$con = getConnection();
-			$query = "";
+			$query = "DELETE FROM products WHERE product_id = '".$productID."'";
 			$result = mysqli_query($con, $query);
 			return $result;
 		}
 
-		// TODO
+		// TODO: CHECK IF WORKS
 		function editProductPrice($productID, $newPrice) {
 			$con = getConnection();
-			$query = "";
+			$query = "UPDATE products SET price = '".$newPrice."' WHERE products.product_id = '".$productID."'";
 			$result = mysqli_query($con, $query);
 			return $result;
 		}
@@ -127,10 +156,26 @@
 
 		// TODO: DEBUG
 		function saveReview($userID, $name, $email, $subject, $message) {
-			$con.= getConnection();
-			$query = "INSERT INTO Reviews(user_id, f_name, email, subject, message) VALUES ('".$userID."', '".$name."', '".$email."', '".$subject."', '".$message."'";
+			$con = getConnection();
+			$query = "INSERT INTO Reviews(user_id, f_name, email, subject, message) VALUES ('".$userID."', '".$name."', '".$email."', '".$subject."', '".$message."')";
 			$result = mysqli_query($con, $query);
-			return $query;
+			return $result;
 		}
+
+
+		function updateUsername($userID, $newUsername) {
+			$con = getConnection();
+			$query = "UPDATE user SET email = '".$newUsername."' WHERE user.user_id = '".$userID."'";
+			$result = mysqli_query($con, $query);
+			return $result;
+		}
+
+		function updatePassword($userID, $newPassword) {
+			$con = getConnection();
+			$query = "UPDATE user SET password = '".$newPassword."' WHERE user.user_id = '".$userID."'";
+			$result = mysqli_query($con, $query);
+			return $result;
+		}
+
 
 ?>

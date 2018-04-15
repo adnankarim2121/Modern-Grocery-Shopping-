@@ -4,12 +4,14 @@ session_start();
 $customerOptionTitles = array(
 	"View Past Purchases",
 	"Contact Us",
+	"Edit Profile",
 	"Logout"
 );
 
 $customerOptionLinks = array(
 	"receipts.php",
 	"../contact.php",
+	"../editUserInfo.php",
 	"../login.php"
 );
 
@@ -120,7 +122,7 @@ $supplierOptionLinks = array(
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
-						<?php for ($i = 0; $i < 3; $i++) { ?>
+						<?php for ($i = 0; $i < 4; $i++) { ?>
 						<li class="btn-cta"><a href=<?=$customerOptionLinks[$i]?>><span><?=$customerOptionTitles[$i]?></span></a></li>
 						<?php } ?>
 					</ul>
@@ -184,11 +186,11 @@ $supplierOptionLinks = array(
 													<div class="col-md-12">
 													<label for="password">Select Desired Location</label>
 													<select name="Location">
-													  <option value="1">Walmart</option>
-													  <option value="2">Superstore</option>
-													  <option value="3">Save on Foods</option>
-													  <option value="4">Safeway</option>
-													  <option value="5">Co-op</option>
+													  <option value="1">Blush</option>
+													  <option value="2">Farmer's Market</option>
+													  <option value="3">Chinese Super Market</option>
+													  <option value="4">Apna Punjab</option>
+													  <option value="5">Bangla Bazaar</option>
 													  <option value="6">Randomly Choose for Me</option>
 													</select>
 													</div>

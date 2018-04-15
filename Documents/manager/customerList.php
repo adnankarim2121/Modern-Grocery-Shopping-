@@ -84,13 +84,10 @@
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="mainManager.html">Savegan <em>.</em></a></div>
+					<div id="gtco-logo"><a href="mainManager.php">Savegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
-					<ul>
-						<li class="btn-cta"><a href="managerAddRemoveProduct.html"><span>Add/Remove Product</span></a></li>
-						<li class="btn-cta"><a href="managerSupplier.html"><span>Edit Product</span></a></li>
-					</ul>
+
 				</div>
 			</div>
 			

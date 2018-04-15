@@ -97,7 +97,6 @@
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
 						<li class="btn-cta"><a href="productInfo.php"><span>Add/Remove Product</span></a></li>
-						<li class="btn-cta"><a href="managerSupplier.html"><span>Edit Product</span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -117,7 +116,8 @@
 				
 					<?php
 					$managerID = $_SESSION['user_id'];
-					$result = getMarketItems($managerID);
+					$managerKey1 = $_SESSION['managerKey'];
+					$result = getMarketItems($managerKey1);
 
 					echo "<div class='w3-container'>
 					<table class='w3-table-all'>
@@ -132,7 +132,7 @@
 					while($row = mysqli_fetch_array($result))
 					 {
 
-					 echo "<tr>";
+					 echo "<tr class = 'clickable-row' data-href = 'url://www.google.com'>";
 					 echo "<td>" . $row['product_id'] . "</td>";
 					 echo "<td>" . $row['product_name'] . "</td>";
 					 echo "<td>" . $row['aisle_id'] . "</td>";

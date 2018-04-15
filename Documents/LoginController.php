@@ -49,6 +49,7 @@
  	$_SESSION['user_id'] = $rowTitle['user_id'];
  	$_SESSION['name'] = $rowTitle['name'];
  	$_SESSION['userType'] = $rowTitle['type'];
+ 	$_SESSION['managerKey'] = $rowTitle['mKEY'];
 
  	if ($rowTitle['type'] === 'customer') { header( 'Location:customer/mainCustomer.php' ); }
  	else if ($rowTitle['type'] === 'manager') { header( 'Location:/manager/mainManager.php' ); }

@@ -84,7 +84,7 @@ include '../DatabaseController.php';
 			
 			<div class="row">
 				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="main.php">Savegan <em>.</em></a></div>
+					<div id="gtco-logo"><a href="mainCustomer.php">Savegan <em>.</em></a></div>
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					
@@ -252,7 +252,7 @@ include '../DatabaseController.php';
 	<iframe style="display:none;" name="target"></iframe>
 	<a href="saveList.php" target="target"><input type="submit" class="btn btn-primary" value="Save List" onclick="location.href='saveListDone.html';"></a>
 	<input type="submit" class="btn btn-primary" value="Print Grocery List" onclick="printList()">
-	<input type="submit" class="btn btn-primary" value="Back To Search" onclick="location.href='main.php';">
+	<input type="submit" class="btn btn-primary" value="Back To Search" onclick="location.href='mainCustomer.php';">
 	<footer id="gtco-footer" role="contentinfo">
 		<div class="gtco-container">
 			<div class="row row-p	b-md">

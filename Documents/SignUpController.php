@@ -8,6 +8,7 @@
 	$type = $_POST["userType"];
 	$password1 = $_POST["password"];
 	$password2 = $_POST["password2"];
+	$managerKey = $_POST["managerKey"];
 
 	$_SESSION['signupEmailError'] = "";
 	$_SESSION['signupNameError'] = "";
@@ -55,21 +56,35 @@
 		if ($type == 2) { $userTypeString = "manager"; }
 		if ($type == 3) { $userTypeString = "supplier"; }
 
-		if (!createUser($email, $name, $password1, $userTypeString)) {
+		if (!createUserCustomer($email, $name, $password1, $userTypeString, $managerKey)) {
 			$_SESSION['signupError'] = "could not create account";
 		 	header( 'Location:/login.php' );
 		 	exit;
 		}
 
+
 		else {
 			$result = authenticateUser($email, $password1);
-			$_SESSION['user_id'] = $result['user_id'];
- 			$_SESSION['name'] = $result['name'];
- 			$_SESSION['userType'] = $result['type'];
+			$user_idFromResult;
+			$nameFromResult;
+			$user_typeFromResult;
+			$managerKeyFromResult;
+			while($array = mysqli_fetch_array($result))
+				{
+					$user_idFromResult = $array['user_id'];
+					$nameFromResult = $array['name'];
+					$user_typeFromResult = $array['type'];
+					$managerKeyFromResult = $array['mKEY'];
+    					 	
+				}
+			$_SESSION['user_id'] = $user_idFromResult;
+ 			$_SESSION['name'] = $nameFromResult;
+ 			$_SESSION['userType'] = $user_typeFromResult;
+ 			$_SESSION['managerKey'] = $managerKeyFromResult;
 
-		 	if ($result['type'] === 'customer') { header( 'Location:customer/mainCustomer.php' ); }
- 			else if ($result['type'] === 'manager') { header( 'Location:/manager/mainManager.php' ); }
- 			else if ($result['type'] === 'supplier') { header( 'Location:/supplier/mainSupplier.php' ); }
+		 	if ($user_typeFromResult === 'customer') { header( 'Location:customer/mainCustomer.php' ); }
+ 			else if ($user_typeFromResult === 'manager') { header( 'Location:/manager/mainManager.php' ); }
+ 			else if ($user_typeFromResult === 'supplier') { header( 'Location:/supplier/mainSupplier.php' ); }
  			//else if ($result['type'] === 'admin') { header( 'Location:/admin/mainAdmin.php' ); }
 		 	exit;
 		}
